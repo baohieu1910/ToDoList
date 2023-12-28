@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @FetchRequest(sortDescriptors: []) private var todos: FetchedResults<Todo>
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")
