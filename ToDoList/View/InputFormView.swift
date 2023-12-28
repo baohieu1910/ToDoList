@@ -11,6 +11,7 @@ struct InputFormView: View {
     @EnvironmentObject var manager: DataManager
     @Environment(\.managedObjectContext) var viewContext
     
+    @State var todo: Todo?
     @Binding var isPresented: Bool
     @State private var title: String = ""
     @State private var date: Date = Date()
@@ -56,6 +57,13 @@ struct InputFormView: View {
                     }
                 }
             }
+            .onAppear {
+                if let todo = todo {
+                    self.title = todo.title!
+                    self.date = todo.date!
+                    self.status = todo.status! == "complete" ? .completed : .pending
+                }
+            }
         }
     }
     
@@ -75,11 +83,13 @@ struct InputFormView: View {
     }
 }
 
-//struct InputFormView_Previews: PreviewProvider {
-//    @EnvironmentObject var manager: DataManager
-//    @Environment(\.managedObjectContext) var viewContext
-//
-//    static var previews: some View {
-//        InputFormView()
-//    }
-//}
+struct InputFormView_Previews: PreviewProvider {
+    @EnvironmentObject var manager: DataManager
+    @Environment(\.managedObjectContext) var viewContext
+
+    @State static var isPresented: Bool = false
+    
+    static var previews: some View {
+        InputFormView(isPresented: $isPresented)
+    }
+}
